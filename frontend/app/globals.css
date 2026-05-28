@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --muted: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --primary: #111827;
+}
+
+html.dark {
+    --background: #020617;
+    --foreground: #f8fafc;
+    --muted: #0f172a;
+    --card: #0b1220;
+    --border: #1e293b;
+    --primary: #f8fafc;
+    color-scheme: dark;
+}
+
+html.light {
+    --background: #ffffff;
+    --foreground: #0f172a;
+    --muted: #f1f5f9;
+    --card: #ffffff;
+    --border: #e2e8f0;
+    --primary: #111827;
+    color-scheme: light;
+}
+
+html {
+    background: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--background);
+    color: var(--foreground);
+}
+
+.glass {
+    background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.08),
+            rgba(255, 255, 255, 0.02)
+    );
+    backdrop-filter: blur(18px);
+}
+
+input,
+textarea,
+select {
+    background-color: var(--card);
+    color: var(--foreground);
+    border-color: var(--border);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #64748b;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+    color: #94a3b8;
+}
+
+.recharts-cartesian-axis-tick-value,
+.recharts-legend-item-text {
+    fill: currentColor;
+}

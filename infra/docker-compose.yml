@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: spend-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-spendinsights}
+      POSTGRES_USER: ${POSTGRES_USER:-spend}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-spend_password}
+    ports: [ "5432:5432" ]
+    volumes: [ "pgdata:/var/lib/postgresql/data" ]
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-spend} -d ${POSTGRES_DB:-spendinsights}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+  redis:
+    image: redis:7-alpine
+    container_name: spend-redis
+    ports: [ "6379:6379" ]
+  ollama:
+    image: ollama/ollama:latest
+    container_name: spend-ollama
+    ports: [ "11434:11434" ]
+    volumes: [ "ollama:/root/.ollama" ]
+  backend:
+    build: ../backend
+    container_name: spend-backend
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_started }
+      ollama: { condition: service_started }
+    env_file: ../.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-spendinsights}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-spend}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-spend_password}
+      REDIS_HOST: redis
+    ports: [ "8080:8080" ]
+  frontend:
+    build: ../frontend
+    container_name: spend-frontend
+    depends_on: [ backend ]
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8080}
+    ports: [ "3000:3000" ]
+volumes:
+  pgdata:
+  ollama:

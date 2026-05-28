@@ -1,0 +1,9 @@
+date,merchant,description,amount
+2026-03-01,Client A,Invoice payment,125000
+2026-03-02,Grab,Client meeting transport,-420
+2026-03-04,Starbucks,Coffee meeting,-520
+2026-03-06,Adobe,Creative Cloud subscription,-2990
+2026-03-10,GCash Transfer,Utilities payment,-5100
+2026-03-15,Landlord,Office rent,-35000
+2026-03-21,Apple Store,MacBook downpayment,-65000
+2026-03-28,Client B,Retainer,80000
